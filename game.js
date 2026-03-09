@@ -10,6 +10,15 @@ const W = canvas.width;
 const H = canvas.height;
 const GOAL = 10;
 const slideColors = ['#ff4d4d', '#ff944d', '#ffd84d', '#64d66b', '#57b2ff', '#a17dff'];
+const FRUIT_TYPES = ['apple', 'strawberry', 'cherry', 'orange', 'pineapple', 'grapes'];
+const FRUIT_COLORS = {
+  apple: '#85f784',
+  strawberry: '#ff6d86',
+  cherry: '#ff4f66',
+  orange: '#ffb04d',
+  pineapple: '#ffe56e',
+  grapes: '#b489ff',
+};
 
 const state = {
   running: false,
@@ -21,6 +30,7 @@ const state = {
   fruits: [],
   particles: [],
   keys: new Set(),
+  touchX: null,
   lastSpawn: 0,
 };
 
@@ -65,6 +75,10 @@ class MeowSynth {
 
 const meow = new MeowSynth();
 
+function randomFruitType() {
+  return FRUIT_TYPES[(Math.random() * FRUIT_TYPES.length) | 0];
+}
+
 function resetGame() {
   state.running = true;
   state.won = false;
@@ -75,21 +89,22 @@ function resetGame() {
   state.cat = { x: W * 0.5, y: H * 0.75, vx: 0, radius: 26, bounce: 0 };
   state.fruits = [];
   state.particles = [];
+  state.touchX = null;
   scoreEl.textContent = '0';
   startOverlay.classList.remove('visible');
   winOverlay.classList.remove('visible');
 }
 
 function spawnFruit() {
-  const type = Math.random() < 0.5 ? 'apple' : 'strawberry';
+  const type = randomFruitType();
   const x = 90 + Math.random() * (W - 180);
   const y = -40;
-  const speed = 180 + Math.random() * 90;
-  state.fruits.push({ x, y, speed, type, size: 18 });
+  const speed = 170 + Math.random() * 110;
+  const size = 14 + Math.random() * 8;
+  state.fruits.push({ x, y, speed, type, size });
 }
 
 function spawnCelebrationFruit() {
-  const type = Math.random() < 0.5 ? 'apple' : 'strawberry';
   state.particles.push({
     x: Math.random() * W,
     y: H + 40,
@@ -98,7 +113,7 @@ function spawnCelebrationFruit() {
     gravity: 760,
     rot: Math.random() * Math.PI,
     vr: -4 + Math.random() * 8,
-    type,
+    type: randomFruitType(),
     size: 14 + Math.random() * 10,
   });
 }
@@ -109,7 +124,16 @@ function update(dt) {
   if (state.running && !state.won) {
     const left = state.keys.has('ArrowLeft') || state.keys.has('a');
     const right = state.keys.has('ArrowRight') || state.keys.has('d');
-    const steer = (right ? 1 : 0) - (left ? 1 : 0);
+    let steer = (right ? 1 : 0) - (left ? 1 : 0);
+
+    if (state.touchX !== null) {
+      const diff = state.touchX - state.cat.x;
+      if (Math.abs(diff) > 6) {
+        steer = Math.sign(diff);
+      } else {
+        steer = 0;
+      }
+    }
 
     state.cat.vx += steer * 1000 * dt;
     state.cat.vx *= 0.84;
@@ -118,7 +142,7 @@ function update(dt) {
 
     state.scroll += 300 * dt;
     state.lastSpawn += dt;
-    if (state.lastSpawn > 0.62) {
+    if (state.lastSpawn > 0.58) {
       state.lastSpawn = 0;
       spawnFruit();
     }
@@ -140,15 +164,15 @@ function update(dt) {
         scoreEl.textContent = String(state.score);
         meow.play();
 
-        for (let p = 0; p < 8; p++) {
+        for (let p = 0; p < 9; p++) {
           state.particles.push({
             x: f.x,
             y: f.y,
-            vx: -150 + Math.random() * 300,
-            vy: -180 + Math.random() * 300,
+            vx: -170 + Math.random() * 340,
+            vy: -190 + Math.random() * 320,
             life: 0.4 + Math.random() * 0.4,
             t: 0,
-            color: f.type === 'apple' ? '#85f784' : '#ff6d86',
+            color: FRUIT_COLORS[f.type],
           });
         }
 
@@ -163,7 +187,7 @@ function update(dt) {
 
   if (state.won) {
     state.cat.bounce = Math.sin(state.time * 8) * 16;
-    if (Math.random() < 0.24) spawnCelebrationFruit();
+    if (Math.random() < 0.3) spawnCelebrationFruit();
   }
 
   for (const p of state.particles) {
@@ -283,7 +307,7 @@ function drawFruit(fruit) {
     ctx.beginPath();
     ctx.ellipse(7, -fruit.size + 1, 8, 4, -0.5, 0, Math.PI * 2);
     ctx.fill();
-  } else {
+  } else if (fruit.type === 'strawberry') {
     ctx.fillStyle = '#ff476b';
     ctx.beginPath();
     ctx.moveTo(0, -fruit.size);
@@ -296,14 +320,73 @@ function drawFruit(fruit) {
     ctx.ellipse(-7, -fruit.size + 4, 6, 4, 0.3, 0, Math.PI * 2);
     ctx.ellipse(7, -fruit.size + 4, 6, 4, -0.3, 0, Math.PI * 2);
     ctx.fill();
-
-    ctx.fillStyle = '#ffd7a1';
-    for (let i = 0; i < 7; i++) {
-      const a = (Math.PI * 2 * i) / 7;
+  } else if (fruit.type === 'cherry') {
+    ctx.strokeStyle = '#4a9f45';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-5, -fruit.size - 10);
+    ctx.quadraticCurveTo(-3, -fruit.size - 20, 5, -fruit.size - 16);
+    ctx.moveTo(5, -fruit.size - 10);
+    ctx.quadraticCurveTo(2, -fruit.size - 22, -6, -fruit.size - 16);
+    ctx.stroke();
+    ctx.fillStyle = '#d7354d';
+    ctx.beginPath();
+    ctx.arc(-6, 3, fruit.size * 0.62, 0, Math.PI * 2);
+    ctx.arc(6, 3, fruit.size * 0.62, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (fruit.type === 'orange') {
+    ctx.fillStyle = '#ff9d3d';
+    ctx.beginPath();
+    ctx.arc(0, 0, fruit.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffc072';
+    ctx.beginPath();
+    ctx.arc(-4, -4, fruit.size * 0.24, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#48b75a';
+    ctx.beginPath();
+    ctx.ellipse(5, -fruit.size + 2, 6, 4, -0.4, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (fruit.type === 'pineapple') {
+    ctx.fillStyle = '#f4ca58';
+    ctx.beginPath();
+    ctx.ellipse(0, 3, fruit.size * 0.85, fruit.size * 1.08, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#d6a63f';
+    ctx.lineWidth = 1.6;
+    for (let i = -2; i <= 2; i++) {
       ctx.beginPath();
-      ctx.arc(Math.cos(a) * 8, -2 + Math.sin(a) * 8, 1.3, 0, Math.PI * 2);
+      ctx.moveTo(-fruit.size * 0.7, i * 5);
+      ctx.lineTo(fruit.size * 0.7, i * 5 + 8);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-fruit.size * 0.7, i * 5 + 8);
+      ctx.lineTo(fruit.size * 0.7, i * 5);
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#57bb60';
+    ctx.beginPath();
+    ctx.moveTo(-8, -fruit.size + 1);
+    ctx.lineTo(-2, -fruit.size - 15);
+    ctx.lineTo(0, -fruit.size + 1);
+    ctx.lineTo(5, -fruit.size - 14);
+    ctx.lineTo(8, -fruit.size + 2);
+    ctx.fill();
+  } else if (fruit.type === 'grapes') {
+    ctx.fillStyle = '#9d78f2';
+    const cluster = [
+      [-8, -1], [0, -4], [8, -1],
+      [-5, 7], [4, 7], [0, 15],
+    ];
+    for (const [gx, gy] of cluster) {
+      ctx.beginPath();
+      ctx.arc(gx, gy, fruit.size * 0.45, 0, Math.PI * 2);
       ctx.fill();
     }
+    ctx.fillStyle = '#66c065';
+    ctx.beginPath();
+    ctx.ellipse(5, -fruit.size + 2, 6, 4, -0.4, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   ctx.restore();
@@ -350,6 +433,31 @@ window.addEventListener('keydown', (e) => {
 
 window.addEventListener('keyup', (e) => {
   state.keys.delete(e.key);
+});
+
+function setTouchPosition(clientX) {
+  const rect = canvas.getBoundingClientRect();
+  const x = ((clientX - rect.left) / rect.width) * W;
+  state.touchX = Math.max(80, Math.min(W - 80, x));
+}
+
+canvas.addEventListener('pointerdown', (e) => {
+  setTouchPosition(e.clientX);
+  canvas.setPointerCapture(e.pointerId);
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (e.buttons > 0) {
+    setTouchPosition(e.clientX);
+  }
+});
+
+canvas.addEventListener('pointerup', () => {
+  state.touchX = null;
+});
+
+canvas.addEventListener('pointercancel', () => {
+  state.touchX = null;
 });
 
 startBtn.addEventListener('click', () => {

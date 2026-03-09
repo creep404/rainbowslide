@@ -14,6 +14,7 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
+  touch-action: none;
 }
 
 #ui {
@@ -68,7 +69,7 @@ body {
 }
 
 .panel {
-  width: min(90vw, 460px);
+  width: min(90vw, 520px);
   background: rgba(22, 24, 54, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 16px;
@@ -101,7 +102,25 @@ button:hover {
   filter: brightness(1.05);
 }
 
-.win h2 {
-  color: #ffee79;
-  letter-spacing: 0.1rem;
+.rainbow-win {
+  font-size: clamp(2.3rem, 8vw, 5rem);
+  font-weight: 900;
+  letter-spacing: 0.22rem;
+  line-height: 1;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #ff4d4d, #ff944d, #ffe34d, #6fe26d, #59b6ff, #a87dff, #ff73c2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+  animation: rainbowPulse 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes rainbowPulse {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1.03);
+  }
 }
