@@ -12,14 +12,19 @@
     <div id="scoreboard">Fruits: <span id="score">0</span>/10</div>
   </div>
 
-  <canvas id="game" width="900" height="560" aria-label="Rainbow Slide game canvas"></canvas>
+  <canvas id="game" aria-label="Rainbow Slide game canvas"></canvas>
+
+  <div id="touch-controls" aria-label="Touch controls">
+    <button id="touch-left" class="touch-btn" aria-label="Move left">◀</button>
+    <button id="touch-right" class="touch-btn" aria-label="Move right">▶</button>
+  </div>
 
   <div id="start-overlay" class="overlay visible">
     <div class="panel">
       <h2>Help Mimi the tuxedo cat slide!</h2>
       <p>Use <strong>← / →</strong> (or <strong>A / D</strong>) to move.</p>
-      <p>Touch controls: hold and drag on the game area to steer Mimi.</p>
-      <p>Collect apples, strawberries, cherries, oranges, pineapples, and grapes. Reach 10 fruits to win!</p>
+      <p>Touch controls: use the on-screen arrows or drag on the game area.</p>
+      <p>Collect fruits and reach 10 points to win!</p>
       <button id="start-btn">Start Game</button>
     </div>
   </div>
