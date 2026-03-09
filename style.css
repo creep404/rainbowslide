@@ -1,0 +1,107 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #1c2555, #0a0e22 70%);
+  color: #fff;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+#ui {
+  position: fixed;
+  top: 16px;
+  left: 20px;
+  right: 20px;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 4;
+}
+
+#ui h1 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+#scoreboard {
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+}
+
+#game {
+  width: min(100vw, 900px);
+  height: auto;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  background: #111;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 8, 20, 0.6);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+  z-index: 5;
+}
+
+.overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.panel {
+  width: min(90vw, 460px);
+  background: rgba(22, 24, 54, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 1.2rem 1.4rem;
+  text-align: center;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+}
+
+.panel h2 {
+  margin: 0 0 0.5rem;
+}
+
+.panel p {
+  margin: 0.3rem 0;
+}
+
+button {
+  margin-top: 1rem;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #7af0b9, #41c089);
+  color: #10201b;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
+
+.win h2 {
+  color: #ffee79;
+  letter-spacing: 0.1rem;
+}

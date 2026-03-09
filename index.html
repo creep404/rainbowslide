@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rainbow Slide</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="ui">
+    <h1>Rainbow Slide</h1>
+    <div id="scoreboard">Fruits: <span id="score">0</span>/10</div>
+  </div>
+
+  <canvas id="game" width="900" height="560" aria-label="Rainbow Slide game canvas"></canvas>
+
+  <div id="start-overlay" class="overlay visible">
+    <div class="panel">
+      <h2>Help the tuxedo cat slide!</h2>
+      <p>Use <strong>← / →</strong> (or <strong>A / D</strong>) to move.</p>
+      <p>Collect green apples and strawberries. Reach 10 fruits to win!</p>
+      <button id="start-btn">Start Game</button>
+    </div>
+  </div>
+
+  <div id="win-overlay" class="overlay">
+    <div class="panel win">
+      <h2>YOU WIN!</h2>
+      <p>Your tuxedo cat is celebrating.</p>
+      <button id="restart-btn">Play Again</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
