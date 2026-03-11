@@ -1,0 +1,128 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #1c2555, #0a0e22 70%);
+  color: #fff;
+  min-height: 100vh;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#ui {
+  position: fixed;
+  top: 16px;
+  left: 20px;
+  right: 20px;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 4;
+}
+
+#ui h1 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+#scoreboard {
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+}
+
+#game {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background: #111;
+}
+
+#touch-controls {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.touch-btn {
+  pointer-events: auto;
+  width: min(22vw, 110px);
+  height: min(22vw, 110px);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  background: rgba(20, 32, 64, 0.45);
+  color: #fff;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 900;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+.touch-btn:active {
+  transform: scale(0.96);
+  background: rgba(122, 240, 185, 0.45);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 8, 20, 0.6);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+  z-index: 5;
+}
+
+.overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.panel {
+  width: min(90vw, 520px);
+  background: rgba(22, 24, 54, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 1.2rem 1.4rem;
+  text-align: center;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+}
+
+button {
+  margin-top: 1rem;
+  border-radius: 10px;
+  border: 0;
+  background: linear-gradient(180deg, #7af0b9, #41c089);
+  color: #10201b;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.rainbow-win {
+  font-size: clamp(2.3rem, 8vw, 5rem);
+  font-weight: 900;
+  letter-spacing: 0.22rem;
+  background: linear-gradient(90deg, #ff4d4d, #ff944d, #ffe34d, #6fe26d, #59b6ff, #a87dff, #ff73c2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+}

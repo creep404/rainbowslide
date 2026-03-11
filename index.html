@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rainbow Slide</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="ui">
+    <h1>Rainbow Slide</h1>
+    <div id="scoreboard">Fruits: <span id="score">0</span>/10</div>
+  </div>
+
+  <canvas id="game" aria-label="Rainbow Slide game canvas"></canvas>
+
+  <div id="touch-controls" aria-label="Touch controls">
+    <button id="touch-left" class="touch-btn" aria-label="Move left">◀</button>
+    <button id="touch-right" class="touch-btn" aria-label="Move right">▶</button>
+  </div>
+
+  <div id="start-overlay" class="overlay visible">
+    <div class="panel">
+      <h2>Help Mimi the tuxedo cat slide!</h2>
+      <p>Use <strong>← / →</strong> (or <strong>A / D</strong>) to move.</p>
+      <p>Touch controls: use the on-screen arrows or drag on the game area.</p>
+      <p>Collect fruits and reach 10 points to win!</p>
+      <button id="start-btn">Start Game</button>
+    </div>
+  </div>
+
+  <div id="win-overlay" class="overlay">
+    <div class="panel win">
+      <h2 class="rainbow-win">YOU WIN!</h2>
+      <p>Mimi is celebrating with fruit fireworks.</p>
+      <button id="restart-btn">Play Again</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
